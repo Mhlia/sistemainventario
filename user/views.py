@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CreateUserForm
+from .forms import CreateUserForm, UserUpdateForm, PerfilUpdateForm
 
 # Create your views here.
 
@@ -29,7 +29,15 @@ def profile(request):
     return render(request, 'user/profile.html') # Perfil de usuario
 
 def profile_update(request):
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user) # Formulario de actualización de usuario
+        perfil_form = PerfilUpdateForm(request.POST, request.FILES, instance=request.user.perfil) # Formulario de actualización de perfil
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        perfil_form = PerfilUpdateForm(instance=request.user.perfil)
+    
     context = {
-        
+        'user_form': user_form,
+        'perfil_form': perfil_form,
     }
     return render(request, 'user/profile_update.html', context) # Actualizar perfil de usuario
