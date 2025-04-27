@@ -19,15 +19,15 @@
                             <div class="col-md-8">
                                 <span class="h4"> Profile Information</span> 
                                 <hr>
-                                <form method="post">
+                                <form method="post" enctype="multipart/form-data">
                                     {{user_form|crispy}}
                                     {{perfil_form|crispy}}
                                     {% csrf_token %}
-                                    <input type="button" value="Actualizar" class ="btn btn-info">
+                                    <input type="submit" value="Actualizar" class ="btn btn-info">
                                 </form>
                             </div>
                             <div class="col-md-4">
-                                <img class="img-thumbnail" src="{{user.perfil.imagen.url}}" alt="">
+                                <img class="img-thumbnail"  src="{{user.perfil.imagen.url}}" alt="">
                             </div>
                         </div>
                     </div>

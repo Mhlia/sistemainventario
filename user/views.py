@@ -32,6 +32,10 @@ def profile_update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user) # Formulario de actualización de usuario
         perfil_form = PerfilUpdateForm(request.POST, request.FILES, instance=request.user.perfil) # Formulario de actualización de perfil
+        if user_form.is_valid() and perfil_form.is_valid():
+            user_form.save()
+            perfil_form.save()
+            return redirect('user-profile') # Redirigir a la vista de perfil después de actualizar
     else:
         user_form = UserUpdateForm(instance=request.user)
         perfil_form = PerfilUpdateForm(instance=request.user.perfil)
