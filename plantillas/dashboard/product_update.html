@@ -1,0 +1,21 @@
+{% extends 'partials/base.html'  %}
+{% block title %} Actualizar Producto {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %} 
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-3">
+            <div class="border bg-white rounded-3, p-4">
+                <h1 class="">Editar producto</h1><hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <a class="btn btn-secondary ml-3 col-md-5" href="{%url 'dashboard-product'%}">Cancelar</a>
+                    <button type="submit" class="btn btn-info col-md-6">Actualizar producto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

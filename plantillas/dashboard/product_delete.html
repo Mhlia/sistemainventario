@@ -1,0 +1,26 @@
+{% extends 'partials/base.html'  %}
+{% block title %} Eliminar producto {% endblock %}
+
+{% block content %} 
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-3">
+            <div class="border bg-white rounded-3, p-4">
+                <h1 class="text-center">Eliminar producto</h1><hr>
+                <div class="alert alert-danger">
+                    <h4 class="alert-heading">¿Estás seguro?</h4>
+                    <p class="mb-0">Una vez eliminado, no podrás recuperar el producto.</p>
+                    <hr>
+                    <p class="mb-0">Si estás seguro, haz clic en el botón de abajo para eliminar el producto.</p><br>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <a class="btn btn-secondary ml-3 col-md-5" href="{%url 'dashboard-product'%}">No!, Cancelar</a>
+                        <button type="submit" class="btn btn-danger col-md-6">Eliminar producto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
