@@ -9,17 +9,30 @@ CATEGORY = (
     ('Servidor', 'Servidor'),
 )
 
+MARCAS = (
+    ('HP', 'HP'),
+    ('Dell', 'Dell'),
+    ('Lenovo', 'Lenovo'),
+    ('Asus', 'Asus'),
+    ('Acer', 'Acer'),
+    ('Apple', 'Apple'),
+)
+
 
 class Products(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True)
-    category = models.CharField(max_length=20, choices=CATEGORY, null=True, blank=True)
-    quantity = models.PositiveIntegerField(null=True, blank=True)
+    serial = models.CharField(max_length=20, unique=True, blank=True, null=True) 
+    nombre = models.CharField(max_length=15, null=True, blank=True)
+    marca = models.CharField(max_length=10, choices=MARCAS, null=True, blank=True)
+    category = models.CharField(max_length=10, choices=CATEGORY, null=True, blank=True)
+    cantidad = models.PositiveIntegerField(null=True, blank=True) 
+    
+    
     
     class Meta:
         verbose_name_plural = 'Productos'
        
     def __str__(self):
-        return f'{self.name} - {self.quantity}'
+        return f'{self.nombre} - {self.cantidad}'
 
 class Pedido(models.Model):
     producto = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)

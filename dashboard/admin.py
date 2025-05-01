@@ -6,8 +6,8 @@ from django.contrib.auth.models import Group
 admin.site.site_header = "DMZ Admin Dashboard"
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'quantity')
-    list_filter = ['category',]
+    list_display = ('serial', 'nombre', 'marca', 'category', 'cantidad')
+    list_filter = ['category', 'marca']
     
 class PedidoAdmin(admin.ModelAdmin):
     list_display = ('producto', 'staff', 'cantidad_solicitada', 'fecha_solicitud')
