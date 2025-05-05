@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Products
+from .models import Products, Pedido
 from .forms import ProductForm
+from django.contrib.auth.models import User
+
 
 
 # Create your views here.
@@ -12,7 +14,20 @@ def index(request):
 
 @login_required(login_url='user-login')
 def staff(request):
-    return render(request, 'dashboard/staff.html')
+    members = User.objects.all() # Obtener todos los usuarios de la base de datos usando ORM
+    context = {
+        'members': members,
+    }
+    return render(request, 'dashboard/staff.html', context)
+
+@login_required(login_url='user-login')
+def staff_detail(request, pk):
+    members = User.objects.get(id=pk) # Obtener un usuario de la base de datos usando ORM
+    context = {
+        'members': members,
+    }
+
+    return render(request, 'dashboard/staff_detail.html', context)
 
 @login_required(login_url='user-login')
 def product(request):
@@ -32,6 +47,7 @@ def product(request):
     }
     return render(request, 'dashboard/product.html', context)
 
+@login_required(login_url='user-login')
 def product_delete(request, pk):
     item = Products.objects.get(id=pk)
     if request.method == 'POST':
@@ -39,6 +55,7 @@ def product_delete(request, pk):
         return redirect('dashboard-product')
     return render(request, 'dashboard/product_delete.html')
 
+@login_required(login_url='user-login')
 def product_update(request, pk):
     item = Products.objects.get(id=pk)
     if request.method == 'POST':
@@ -56,4 +73,8 @@ def product_update(request, pk):
 
 @login_required(login_url='user-login')
 def orders(request):
-    return render(request, 'dashboard/orders.html')
+    orders = Pedido.objects.all() # Obtener todos los pedidos de la base de datos usando ORM
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'dashboard/orders.html', context)

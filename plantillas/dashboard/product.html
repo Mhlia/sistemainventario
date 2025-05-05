@@ -9,13 +9,13 @@
     <div class="container">
         <div class="row my-4">
             <div class="col-md-4">
-                <div class="border bg-white p-3">
-                    <h4>Agregar Productos</h4>
+                <div class=" border bg-white p-3">
+                    <h4>Ingresa Producto</h4>
                     <hr>
                     <form method="post">
                         {% csrf_token %}
                         {{form|crispy }} <br>
-                        <input class="btn btn-success btn-block " type="submit" value="Add Product">
+                        <input class="btn btn-success btn-block " type="submit" value="Agregar Producto">
 
                     </form>
                 </div>
@@ -41,8 +41,8 @@
                             <td>{{item.category}}</td>
                             <td>{{item.cantidad}}</td>
                             <td>
-                                <a class="btn btn-info btn-sm" href="{% url 'dashboard-product-update' item.id%}">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="{% url 'dashboard-product-delete' item.id%}">Delete</a>
+                                <a class="btn btn-info btn-sm" href="{% url 'dashboard-product-update' item.id%}">Editar</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'dashboard-product-delete' item.id%}">Eliminar</a>
                             </td>
                         </tr>
                         {% endfor %}

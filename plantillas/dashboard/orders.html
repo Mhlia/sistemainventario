@@ -13,41 +13,23 @@
                 <table class="table bg-white">
                     <thead class="bg-info">
                         <tr class="text-white">
-                            <th scope="col">#</th>
-                            <th scope="col">Product</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Order by</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Pedido por</th>
+                            <th scope="col">Fecha de pedido</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for orders in orders %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>
-                                Broni
-                            </td>
+                            <td>{{orders.producto}}</td>
+                            <td>{{orders.producto.category}}</td>
+                            <td>{{orders.cantidad_solicitada}}</td>
+                            <td>{{orders.staff}}</td>
+                            <td>{{orders.fecha_solicitud}}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>
-                                Kenneth
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>
-                                Cecilia
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
