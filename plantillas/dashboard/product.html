@@ -9,6 +9,16 @@
     <div class="container">
         <div class="row my-4">
             <div class="col-md-4">
+                {% for message in messages %}
+                {% if messages %}
+                <div>
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
                 <div class=" border bg-white p-3">
                     <h4>Ingresa Producto</h4>
                     <hr>

@@ -2,15 +2,32 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Products, Pedido
-from .forms import ProductForm
+from .forms import ProductForm, OrderForm
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 
 # Create your views here.
 @login_required(login_url='user-login')
 def index(request):
-    return render(request, 'dashboard\index.html')
+    orders = Pedido.objects.all() 
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.staff = request.user # Asignar el usuario actual al pedido
+            instance.save()
+            return redirect('dashboard-index')
+    else:
+        form = OrderForm()
+
+    context = {
+        'orders': orders,
+        'form': form,
+    }
+
+    return render(request, 'dashboard\index.html', context)
 
 @login_required(login_url='user-login')
 def staff(request):
@@ -38,6 +55,9 @@ def product(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
+            product_name = form.cleaned_data.get('nombre')
+            product_brand = form.cleaned_data.get('marca')
+            messages.success(request, f'El producto {product_brand} - {product_name} se ha agregado correctamente.')
             return redirect('dashboard-product')
     else:
         form = ProductForm()

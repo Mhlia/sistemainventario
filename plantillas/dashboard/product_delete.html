@@ -1,5 +1,6 @@
 {% extends 'partials/base.html'  %}
 {% block title %} Eliminar producto {% endblock %}
+{% load crispy_forms_tags %}
 
 {% block content %} 
 <div class="container">
@@ -14,7 +15,7 @@
                     <p class="mb-0">Si estás seguro, haz clic en el botón de abajo para eliminar el producto.</p><br>
                     <form method="post">
                         {% csrf_token %}
-                        {{ form|crispy }}
+                        {{ form |crispy }}
                         <a class="btn btn-secondary ml-3 col-md-5" href="{%url 'dashboard-product'%}">No!, Cancelar</a>
                         <button type="submit" class="btn btn-danger col-md-6">Eliminar producto</button>
                     </form>
