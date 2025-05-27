@@ -6,6 +6,15 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-6 offset-md-3">
+                {% for message in messages %}
+                {% if messages %}
+                <div>
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
                 <div class="border bg-white p-3"> 
                     <h2>Iniciar sesion<hr></h2>
                     <form method="post" action="{% url 'user-login' %}">

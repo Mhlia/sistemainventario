@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect 
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm, UserUpdateForm, PerfilUpdateForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -9,6 +10,8 @@ def register(request):
         form = CreateUserForm(request.POST) # Formulario de registro
         if form.is_valid(): 
             form.save() 
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Se ha creado la cuenta para {username} correctamente. Por favor inicie sesion') # Mensaje de éxito
             return redirect('user-login') 
     else:
         form = CreateUserForm()

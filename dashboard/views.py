@@ -11,7 +11,11 @@ from django.contrib import messages
 # Create your views here.
 @login_required(login_url='user-login')
 def index(request):
-    orders = Pedido.objects.all() 
+    orders = Pedido.objects.all()
+    products = Products.objects.all()
+    members_count = User.objects.all().count()
+    products_count = products.count()
+    orders_count = orders.count()
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -25,6 +29,11 @@ def index(request):
     context = {
         'orders': orders,
         'form': form,
+        'products': products,
+        'members_count': members_count,
+        'products_count': products_count,
+        'orders_count': orders_count,
+        
     }
 
     return render(request, 'dashboard\index.html', context)
@@ -32,8 +41,14 @@ def index(request):
 @login_required(login_url='user-login')
 def staff(request):
     members = User.objects.all() # Obtener todos los usuarios de la base de datos usando ORM
+    members_count = members.count() # Contar el número de usuarios
+    orders_count = Pedido.objects.all().count() 
+    products_count = Products.objects.all().count() # Contar el número de productos
     context = {
         'members': members,
+        'members_count': members_count,
+        'orders_count': orders_count,
+        'products_count': products_count,
     }
     return render(request, 'dashboard/staff.html', context)
 
@@ -50,6 +65,10 @@ def staff_detail(request, pk):
 def product(request):
     items = Products.objects.all() # Obtener todos los productos de la base de datos usando ORM
     #items = Products.objects.raw(''SELECT * FROM dashboard_products') # Obtener todos los productos de la base de datos usando raw SQL
+    products_count = items.count()
+    members_count = User.objects.all().count()
+    orders_count = Pedido.objects.all().count()
+    
     
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -64,6 +83,9 @@ def product(request):
     context = {
         'items': items,
         'form': form,
+        'members_count': members_count,
+        'products_count': products_count,
+        'orders_count': orders_count,
     }
     return render(request, 'dashboard/product.html', context)
 
@@ -94,7 +116,13 @@ def product_update(request, pk):
 @login_required(login_url='user-login')
 def orders(request):
     orders = Pedido.objects.all() # Obtener todos los pedidos de la base de datos usando ORM
+    orders_count = orders.count()
+    members_count = User.objects.all().count() 
+    products_count = Products.objects.all().count() 
     context = {
         'orders': orders,
+        'members_count': members_count,
+        'orders_count': orders_count,
+        'products_count': products_count,
     }
     return render(request, 'dashboard/orders.html', context)
