@@ -7,6 +7,8 @@ urlpatterns = [
     path('staff/detail/int<int:pk>/', views.staff_detail, name='dashboard-staff-detail'),
     path('product/', views.product, name='dashboard-product'),
     path('product/delete/<int:pk>/', views.product_delete, name='dashboard-product-delete'),   
-    path('product/update/<int:pk>/', views.product_update, name='dashboard-product-update'),   
+    path('product/update/<int:pk>/', views.product_update, name='dashboard-product-update'),
+    path('serial/delete/<int:pk>/', views.serial_delete, name='dashboard-serial-delete'),
+    path('serial/update/<int:pk>/', views.serial_update, name='dashboard-serial-update'),
     path('orders/', views.orders, name='dashboard-orders'),
 ]

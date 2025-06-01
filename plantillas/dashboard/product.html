@@ -1,67 +1,129 @@
 {% extends 'partials/base.html'  %}
 {% block title %} Productos {% endblock %}
 {% load crispy_forms_tags %}
-
 {% block content %} 
 {% include 'partials/topnav.html' %}
-
-    <!--Table-->
-    <div class="container">
-        <div class="row my-4">
-            <div class="col-md-4">
-                {% for message in messages %}
-                {% if messages %}
-                <div>
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-
-                <div class=" border bg-white p-3">
-                    <h4>Ingresa Producto</h4>
-                    <hr>
-                    <form method="post">
-                        {% csrf_token %}
-                        {{form|crispy }} <br>
-                        <input class="btn btn-success btn-block " type="submit" value="Agregar Producto">
-
-                    </form>
-                </div>
+<div class="container">
+   <div class="row my-4">
+      <div class="col-md-4">
+         {% for message in messages %}
+         {% if messages %}
+         <div>
+            <div class="alert alert-{{ message.tags }}">
+               {{ message }}
             </div>
-            <div class="col-md-8 ">
-                <table class="table bg-white ">
-                    <thead class="bg-info">
-                        <tr class="text-white text-center">
-                            <th scope="col">Serial</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Marca</th>
-                            <th scope="col">Categoría</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        {% for item in items %}
-                        <tr>
-                            <th scope="row">{{item.serial}}</th>
-                            <td>{{item.nombre}}</td>
-                            <td>{{item.marca}}</td>
-                            <td>{{item.category}}</td>
-                            <td>{{item.cantidad}}</td>
-                            <td>
-                                <a class="btn btn-info btn-sm" href="{% url 'dashboard-product-update' item.id%}">Editar</a>
-                                <a class="btn btn-danger btn-sm" href="{% url 'dashboard-product-delete' item.id%}">Eliminar</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <!--End Table-->
+         </div>
+         {% endif %}
+         {% endfor %}
+         <div class="border bg-white p-3">
+            <h4>Ingresa Producto</h4>
+            <hr>
+            <form method="post">
+               {% csrf_token %}
+               {{form|crispy }} <br>
+               <input class="btn btn-success btn-block" type="submit" name="agregar_producto" value="Agregar Producto">
+            </form>
+         </div>
+         <div class="border bg-white p-3">
+            <h4>Agregar Serial del Equipo</h4>
+            <hr>
+            <form method="post">
+               {% csrf_token %}
+               {{equipment_form|crispy }} <br>
+               <input class="btn btn-success btn-block" type="submit" name="agregar_serial" value="Agregar Serial">
+            </form>
+         </div>
+      </div>
+      <div class="col-md-8">
+         <table class="table bg-white">
+            <thead class="bg-info">
+               <tr class="text-white text-center">
+                  <th scope="col">Serial</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Marca</th>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Acciones</th>
+               </tr>
+            </thead>
+            <tbody class="text-center">
+               {% for item in items %}
+               <tr>
+                  <td>
+                     <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#serialModal{{ item.id }}">
+                     Ver Serial ({{ item.equipo_set.count }})
+                     </button>
+                  </td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.marca }}</td>
+                  <td>{{ item.category }}</td>
+                  <td>{{ item.equipo_set.count }}</td>
+                  <td>
+                     <a class="btn btn-info btn-sm" href="{% url 'dashboard-product-update' item.id %}">Editar</a>
+                     <a class="btn btn-danger btn-sm" href="{% url 'dashboard-product-delete' item.id %}">Eliminar</a>
+                  </td>
+               </tr>
+               <!-- Modal for Serial -->
+               <div class="modal fade" id="serialModal{{ item.id }}" tabindex="-1" aria-labelledby="serialModalLabel{{ item.id }}" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="serialModalLabel{{ item.id }}">Seriales de {{ item.nombre }}</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <ul class="list-group">
+                              {% for equipo in item.equipo_set.all %}
+                              <li class="list-group-item d-flex justify-content-between align-items-center">
+                                 {{ equipo.serial }}
+                                 <div>
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editSerialModal{{ equipo.id }}">
+                                    Editar
+                                    </button>
+                                    <!-- Formulario para eliminar -->
+                                    <form method="post" action="{% url 'dashboard-serial-delete' equipo.id %}" style="display: inline;">
+                                       {% csrf_token %}
+                                       <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    </form>
+                                 </div>
+                              </li>
+                              {% empty %}
+                              <li class="list-group-item">Sin seriales registrados</li>
+                              {% endfor %}
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+<!-- Modales de edición de seriales (fuera de la tabla y de otros modales) -->
+{% for item in items %}
+{% for equipo in item.equipo_set.all %}
+<div class="modal fade" id="editSerialModal{{ equipo.id }}" tabindex="-1" aria-labelledby="editSerialModalLabel{{ equipo.id }}" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="editSerialModalLabel{{ equipo.id }}">Editar Serial de {{ equipo.serial }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <form method="post" action="{% url 'dashboard-serial-update' equipo.id %}">
+               {% csrf_token %}
+               <div class="mb-3">
+                  <label for="serial{{ equipo.id }}" class="form-label">Nuevo Serial</label>
+                  <input type="text" class="form-control" id="serial{{ equipo.id }}" name="serial" value="{{ equipo.serial }}">
+               </div>
+               <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+{% endfor %}
+{% endfor %}
 {% endblock %}

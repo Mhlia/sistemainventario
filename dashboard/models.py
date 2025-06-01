@@ -20,19 +20,22 @@ MARCAS = (
 
 
 class Products(models.Model):
-    serial = models.CharField(max_length=20, unique=True, blank=True, null=True) 
-    nombre = models.CharField(max_length=15, null=True, blank=True)
-    marca = models.CharField(max_length=10, choices=MARCAS, null=True, blank=True)
-    category = models.CharField(max_length=10, choices=CATEGORY, null=True, blank=True)
-    cantidad = models.PositiveIntegerField(null=True, blank=True) 
-    
-    
+    nombre = models.CharField(max_length=100, null=True, blank=True)
+    marca = models.CharField(max_length=50, choices=MARCAS, null=True, blank=True)
+    category = models.CharField(max_length=50, choices=CATEGORY, null=True, blank=True)
     
     class Meta:
         verbose_name_plural = 'Productos'
        
     def __str__(self):
-        return f'{self.nombre} - {self.cantidad}'
+        return f'{self.nombre} - {self.marca}'
+    
+class Equipo(models.Model):
+    producto = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
+    serial = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.producto.nombre} - {self.serial}'
 
 class Pedido(models.Model):
     producto = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)

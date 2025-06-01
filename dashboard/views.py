@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Products, Pedido
-from .forms import ProductForm, OrderForm
+from .models import Products, Pedido, Equipo
+from .forms import ProductForm, OrderForm, EquipmentForm
 from django.contrib.auth.models import User
 from django.contrib import messages
+from datetime import datetime
+
 
 
 
@@ -61,6 +63,8 @@ def staff_detail(request, pk):
 
     return render(request, 'dashboard/staff_detail.html', context)
 
+ 
+
 @login_required(login_url='user-login')
 def product(request):
     items = Products.objects.all() # Obtener todos los productos de la base de datos usando ORM
@@ -68,24 +72,37 @@ def product(request):
     products_count = items.count()
     members_count = User.objects.all().count()
     orders_count = Pedido.objects.all().count()
-    
-    
+
+    equipo_por_producto = {}
+    for producto in items:
+        equipo_por_producto[producto.id] = producto.equipo_set.count()
+
+    form = ProductForm()
+    equipment_form = EquipmentForm()
+
     if request.method == 'POST':
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-            product_name = form.cleaned_data.get('nombre')
-            product_brand = form.cleaned_data.get('marca')
-            messages.success(request, f'El producto {product_brand} - {product_name} se ha agregado correctamente.')
+        if 'agregar_producto' in request.POST:
+            form = ProductForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Producto agregado exitosamente.')
+                return redirect('dashboard-product')
+    if 'agregar_serial' in request.POST:
+        equipment_form = EquipmentForm(request.POST)
+        if equipment_form.is_valid():
+            equipment_form.save()
+            messages.success(request, 'Equipo agregado exitosamente.')
             return redirect('dashboard-product')
-    else:
-        form = ProductForm()
+        
+        
     context = {
         'items': items,
         'form': form,
+        'equipment_form': equipment_form,
         'members_count': members_count,
         'products_count': products_count,
         'orders_count': orders_count,
+        'equipo_por_producto': equipo_por_producto,
     }
     return render(request, 'dashboard/product.html', context)
 
@@ -96,6 +113,22 @@ def product_delete(request, pk):
         item.delete()
         return redirect('dashboard-product')
     return render(request, 'dashboard/product_delete.html')
+
+def serial_delete(request, pk):
+    equipo = get_object_or_404(Equipo, id=pk)
+    equipo.delete()
+    messages.success(request, 'Serial eliminado exitosamente.')
+    return redirect('dashboard-product')
+
+def serial_update(request, pk):
+    equipo = get_object_or_404(Equipo, id=pk)
+    if request.method == 'POST':
+        nuevo_serial = request.POST.get('serial')
+        equipo.serial = nuevo_serial
+        equipo.save()
+        messages.success(request, 'Serial actualizado exitosamente.')
+        return redirect('dashboard-product')
+
 
 @login_required(login_url='user-login')
 def product_update(request, pk):
@@ -126,3 +159,4 @@ def orders(request):
         'products_count': products_count,
     }
     return render(request, 'dashboard/orders.html', context)
+
