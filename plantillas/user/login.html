@@ -21,6 +21,7 @@
                         {% csrf_token %}
                         {{ form |crispy }} 
                     <button type="submit" class="btn btn-success">Iniciar sesion</button>
+                    <a class="mx-2 font-weight-normal" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
                     </form>
                 </div>
             </div>

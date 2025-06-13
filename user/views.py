@@ -5,7 +5,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-def register(request):
+def register(request): # Vista para registrar un nuevo usuario
     if request.method == 'POST':
         form = CreateUserForm(request.POST) # Formulario de registro
         if form.is_valid(): 

@@ -30,20 +30,20 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'dashboard.apps.DashboardConfig',
-    'user.apps.UserConfig',
-    'crispy_forms',
-    'crispy_bootstrap4',
+INSTALLED_APPS = [ # Lista de aplicaciones instaladas
+    'django.contrib.admin', # Aplicación de administración de Django
+    'django.contrib.auth', # Aplicación de autenticación de Django
+    'django.contrib.contenttypes', # Aplicación de tipos de contenido de Django
+    'django.contrib.sessions', # Aplicación de sesiones de Django
+    'django.contrib.messages', # Aplicación de mensajes de Django
+    'django.contrib.staticfiles', # Aplicación de archivos estáticos de Django
+    'dashboard.apps.DashboardConfig', # Aplicación del dashboard
+    'user.apps.UserConfig', # Aplicación de usuarios
+    'crispy_forms', # Aplicación para formularios
+    'crispy_bootstrap4', # Aplicación para Bootstrap 4
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [ 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,32 +53,34 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'sistemainventario.urls'
+ROOT_URLCONF = 'sistemainventario.urls' # Configuración de las URLs raíz del proyecto
 
-TEMPLATES = [
+TEMPLATES = [ # Lista de configuraciones de plantillas
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'plantillas'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'dashboard.context_processors.fecha_actual',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates', # Backend de plantillas de Django
+        'DIRS': [BASE_DIR / 'plantillas'], # Directorios donde buscar las plantillas
+        # 'DIRS': [], # Puedes especificar directorios adicionales para las plantillas
+        'APP_DIRS': True, # Habilita la búsqueda de plantillas en los directorios de las aplicaciones instaladas
+        'OPTIONS': { # Opciones adicionales para las plantillas
+            'context_processors': [ # Procesadores de contexto que se ejecutan para cada solicitud
+                'django.template.context_processors.debug', # Habilita el modo de depuración
+                'django.template.context_processors.request', # Procesa las solicitudes y proporciona información de la solicitud al contexto
+                'django.contrib.auth.context_processors.auth', # Proporciona información de autenticación al contexto
+                'django.contrib.messages.context_processors.messages', # Proporciona mensajes al contexto
+                'dashboard.context_processors.fecha_actual', # Procesador de contexto personalizado para la fecha actual
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'sistemainventario.wsgi.application'
+WSGI_APPLICATION = 'sistemainventario.wsgi.application' # Configuración de la aplicación WSGI para el proyecto
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+DATABASES = { # Configuración de la base de datos
+    
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -91,7 +93,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', 
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
@@ -104,14 +106,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap4' # Configuración de Crispy Forms para usar Bootstrap 4
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'es-es'
+LANGUAGE_CODE = 'es-es' # Código de idioma del proyecto
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC' # Zona horaria del proyecto
 
 USE_I18N = True
 
@@ -121,25 +123,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/' # URL para acceder a los archivos estáticos
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
+STATICFILES_DIRS = [ # Directorios donde buscar archivos estáticos
+    BASE_DIR / "static", # Directorio de archivos estáticos del proyecto
 ]
 
-MEDIA_ROOT = (BASE_DIR / 'media')
+MEDIA_ROOT = (BASE_DIR / 'media') # Directorio donde se almacenarán los archivos multimedia
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/media/' # URL para acceder a los archivos multimedia
 
-STATIC_ROOT = (BASE_DIR /"asert/")
+STATIC_ROOT = (BASE_DIR /"asert/") # Directorio donde se recopilarán los archivos estáticos para producción
 
-LOGIN_REDIRECT_URL = 'dashboard-index'
+LOGIN_REDIRECT_URL = 'dashboard-index' # URL a la que se redirige después de iniciar sesión
 
-LOGIN_URL = 'user-login'
+LOGIN_URL = 'user-login' # URL de inicio de sesión
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # Configuración del backend de correo electrónico
+EMAIL_HOST = 'smtp.gmail.com' # Servidor SMTP de Gmail
+EMAIL_PORT = 587 # Puerto para TLS
+EMAIL_USE_TLS = True # Configuración para usar TLS
+EMAIL_HOST_USER = 'sistemainventario4@gmail.com' # Usuario del servidor SMTP (correo electrónico)
+EMAIL_HOST_PASSWORD = 'fmxa ssho ujqh zqwq' # Contraseña del servidor SMTP (correo electrónico)
 
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' # Tipo de campo de clave primaria por defecto para los modelos

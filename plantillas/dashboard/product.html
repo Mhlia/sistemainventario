@@ -47,10 +47,13 @@
                </tr>
             </thead>
             <tbody class="text-center">
+               <a href="{% url 'dashboard-product-excel' %}" class="btn btn-success fw-bold my-2">
+                  <i class="bi bi-file-earmark-excel"></i><span> Exportar Excel</span>
+               </a>
                {% for item in items %}
                <tr>
                   <td>
-                     <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#serialModal{{ item.id }}">
+                     <button type="button" class="btn btn-success font-weight-bold" data-bs-toggle="modal" data-bs-target="#serialModal{{ item.id }}">
                      Ver Serial ({{ item.equipo_set.count }})
                      </button>
                   </td>
